@@ -101,3 +101,14 @@ repositório público). Publicar o SITE é permitido; manter o motor num reposit
   (continuam no pico, na promessa e na folhagem do fechamento). Cartões 4:5, `object-fit: cover`, cantos de 16 px.
 - **Tipografia:** Instrument Serif (títulos) + Jost (textos). Antes: EB Garamond + Hanken Grotesk.
 - Fotos sem nomes de clientes visíveis (regra do usuário).
+
+# PIVÔ 2026-11-13: paisagismo arquitetônico (ECM Gardens)
+Escopo mudou: a página é só de paisagismo. Todo conteúdo de floricultura (buquês, presentes, arranjos, flores de varejo) foi removido,
+incluindo fotos, textos e as ilustrações SVG. O build impede a volta dessas palavras.
+- **Marca:** ECM Gardens | Paisagismo. **Promessa:** "Paisagismo que valoriza seu imóvel".
+- **Serviços:** projetos, jardins, irrigação automatizada, implantação e manutenção de áreas verdes. **Atendimento:** Brasília e região, sede em Luziânia – GO.
+- **CTAs:** "Solicitar projeto" e "Agendar visita técnica" → WhatsApp com mensagem de paisagismo.
+- **WhatsApp:** o pedido trazia `556194476001` (12 dígitos, falta um 9). Mantido o número já usado e exibido: (61) 99447-6001 = `5561994476001`. CONFIRMAR.
+- **Cenas:** abertura (vídeo de jardim) · valorização do imóvel · serviços (cartões de vidro) · como trabalhamos (4 passos por tempo, uma foto por passo) · projetos (mosaico assimétrico em grade) · equipe em campo (trilho horizontal) · fechamento.
+- **Fotos:** 15 recortes de prints do Instagram (~330 px; sem selos de vídeo). A foto da equipe mostra o uniforme ECM Gardens com telefone e Instagram da empresa legíveis (parcialmente), conferir. Sem fotos "antes/depois" reais (não há par do mesmo espaço).
+- **Cores:** verdes profundos, concreto/cinza arquitetônico, argila, acento âmbar. Tipografia: Instrument Serif + Jost.

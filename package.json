@@ -2,7 +2,7 @@
   "name": "floricultura-jardim-flamboyant",
   "version": "1.0.0",
   "private": true,
-  "description": "Landing page da Floricultura do Jardim Flamboyant · ECM Gardens Flowers (Luziânia – GO). Site estático com rolagem interativa.",
+  "description": "Landing page da ECM Gardens | Paisagismo (Brasília e região, sede em Luziânia – GO). Site estático com rolagem interativa.",
   "type": "module",
   "scripts": {
     "gerar": "node fonte/gerar.mjs index.html",

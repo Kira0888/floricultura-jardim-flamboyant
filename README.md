@@ -1,6 +1,6 @@
-# Floricultura do Jardim Flamboyant · ECM Gardens Flowers
+# ECM Gardens | Paisagismo
 
-Landing page estática (HTML + CSS + JS, sem dependências) com rolagem interativa. Luziânia – GO.
+Landing page estática (HTML + CSS + JS, sem dependências) com rolagem interativa. Brasília e região, sede em Luziânia – GO.
 
 ## Comandos
 
@@ -17,13 +17,13 @@ npm run gerar      # recria index.html a partir de fonte/ (ilustrações + links
 |---|---|
 | `index.html` | A página (gerada por `npm run gerar`; as ilustrações SVG ficam embutidas) |
 | `site.css` | Identidade visual, layout e animações da página |
-| `luz.js` | Vídeo da abertura (toca só na tela), pausa das animações fora da tela, teclado no trilho |
-| `etapas.js` | Cena 3: os 4 passos avançam sozinhos por tempo, com pausa e navegação por segmentos |
+| `luz.js` | Vídeo da abertura (toca só na tela) e teclado no trilho horizontal |
+| `etapas.js` | Cena 4 ("Como trabalhamos"): os 4 passos avançam sozinhos por tempo, uma foto por passo, com pausa e navegação por segmentos |
 | `sites-incriveis.js` / `.css` | Motor de rolagem (`data-fx-*`). Não editar |
 | `fontes.css`, `fonts/` | Fontes hospedadas junto do site: Instrument Serif (títulos) e Jost (textos) |
-| `fotos/` | Fotos reais (WebP) e o quadro de reserva do vídeo (`hero-poster.webp`) |
-| `video/` | Vídeo da abertura, um buquê de rosas (`hero.mp4` H.264 e `hero.webm` VP9), sem áudio, loop de 8,5 s |
-| `fonte/` | Gerador do HTML: `template.html` (texto e estrutura), `plantas.mjs` (ilustrações), `gerar.mjs` |
+| `fotos/` | Fotos reais de paisagismo (WebP) e o quadro de reserva do vídeo (`hero-poster.webp`) |
+| `video/` | Vídeo da abertura, um jardim projetado (`hero.mp4` H.264 e `hero.webm` VP9), sem áudio, loop de 8,5 s |
+| `fonte/` | Gerador do HTML: `template.html` (textos e estrutura) e `gerar.mjs` (links do WhatsApp) |
 | `scripts/build.mjs` | Validação + cópia para `dist/` |
 | `vercel.json` | Build, pasta de saída e cabeçalhos de cache/segurança |
 | `BRIEF.md` | Notas do projeto (não vai ao ar) |
@@ -31,9 +31,9 @@ npm run gerar      # recria index.html a partir de fonte/ (ilustrações + links
 ## Editar textos e contatos
 
 Os textos ficam em `fonte/template.html`. Depois de editar, rode `npm run gerar` e `npm run build`.
-O número do WhatsApp e as mensagens pré-preenchidas ficam em `fonte/gerar.mjs`.
-O `npm run build` falha se o WhatsApp não for o número oficial, se faltar a mensagem de envio de fotos
-ou se o link do Instagram sumir.
+O número do WhatsApp e as mensagens pré-preenchidas (solicitar projeto, agendar visita técnica) ficam em `fonte/gerar.mjs`.
+O `npm run build` falha se o WhatsApp não for o número oficial, se faltarem os links de projeto e de visita técnica,
+ou se voltar qualquer conteúdo de floricultura (buquês, presentes, arranjos) no texto ou nos nomes das fotos.
 
 ## Deploy
 
@@ -54,7 +54,7 @@ fica parada, completa e legível, na ordem do conteúdo.
 `video/hero.mp4` e `video/hero.webm` foram gerados a partir do vídeo original com ffmpeg:
 sem áudio, 1280×720, 24 fps, com dissolução de 1,5 s entre o fim e o começo para o loop não dar salto.
 Para trocar o vídeo, mantenha o mesmo nome dos arquivos (ou ajuste o `<video>` em `fonte/template.html`)
-e mire em menos de ~3 MB (o atual tem 1,2 MB em MP4). Com movimento reduzido o vídeo não toca: aparece só o quadro de reserva.
+e mire em menos de ~3 MB (o atual tem 1,8 MB em MP4). Com movimento reduzido o vídeo não toca: aparece só o quadro de reserva.
 
 ## Tempo dos passos (cena 3)
 

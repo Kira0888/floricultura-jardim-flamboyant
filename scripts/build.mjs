@@ -21,7 +21,6 @@ const PASTAS = ["fonts", "fotos", "video"];
 
 // contatos oficiais (única fonte da verdade para a checagem)
 const WHATSAPP = "5561994476001";
-const INSTAGRAM = "https://www.instagram.com/floriculturaflamboyant/";
 
 const erros = [];
 const avisos = [];
@@ -66,13 +65,15 @@ for (const css of ["site.css", "fontes.css", "sites-incriveis.css"]) {
 // imagens: alt, largura e altura (evita salto de layout)
 for (const m of html.matchAll(/<img\b[^>]*>/g)) {
   const tag = m[0];
-  if (!/\salt="[^"]+"/.test(tag)) erros.push(`<img> sem alt: ${tag.slice(0, 80)}`);
+  // alt vazio só é aceito em imagem decorativa dentro de um contêiner aria-hidden
+  const decorativa = /\salt=""/.test(tag) && html.slice(Math.max(0, m.index - 140), m.index).includes('aria-hidden="true"');
+  if (!decorativa && !/\salt="[^"]+"/.test(tag)) erros.push(`<img> sem alt: ${tag.slice(0, 80)}`);
   if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) avisos.push(`<img> sem width/height: ${tag.slice(0, 80)}`);
 }
 
 // fotos não usadas
 const usadas = new Set([...html.matchAll(/fotos\/([^"]+)"/g)].map((m) => m[1]));
-for (const f of readdirSync(join(raiz, "fotos"))) if (!usadas.has(f)) avisos.push(`foto não usada no HTML: fotos/${f}`);
+for (const f of readdirSync(join(raiz, "fotos"))) if (!usadas.has(f) && f !== "hero-poster.webp") avisos.push(`foto não usada no HTML: fotos/${f}`);
 
 // links externos que abrem em nova aba precisam de rel="noopener"
 for (const m of html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
@@ -94,6 +95,8 @@ for (const f of readdirSync(join(raiz, "video"))) {
 // ---------- 3. conversão: WhatsApp e Instagram ----------
 const wa = [...html.matchAll(/href="(https:\/\/wa\.me\/[^"]+)"/g)].map((m) => m[1]);
 if (wa.length < 3) erros.push(`esperava ao menos 3 links de WhatsApp, achei ${wa.length}`);
+if (!wa.some((u) => /visita/i.test(decodeURIComponent(u)))) erros.push("falta um link de WhatsApp para agendar visita técnica");
+if (!wa.some((u) => /projeto/i.test(decodeURIComponent(u)))) erros.push("falta um link de WhatsApp para solicitar projeto");
 for (const u of wa) {
   let url;
   try { url = new URL(u); } catch { erros.push(`link de WhatsApp inválido: ${u}`); continue; }
@@ -102,8 +105,14 @@ for (const u of wa) {
   if (texto.trim().length < 15) erros.push(`link de WhatsApp sem mensagem pré-preenchida: ${u}`);
 }
 const principal = new URL(wa[0]).searchParams.get("text") || "";
-if (!/foto/i.test(principal)) erros.push("a mensagem principal do WhatsApp deve mencionar o envio de fotos");
-if (!html.includes(`href="${INSTAGRAM}"`)) erros.push(`link do Instagram ausente ou diferente de ${INSTAGRAM}`);
+if (!/paisagismo/i.test(principal)) erros.push("a mensagem principal do WhatsApp deve falar de paisagismo");
+
+// escopo: a página é só de paisagismo. Nada de floricultura/presentes pode voltar por engano.
+const texto = html.replace(/<(script|style)[\s\S]*?<\/\1>/g, "").replace(/<[^>]+>/g, " ").toLowerCase();
+const proibidas = ["buquê", "buque", "floricultura", "presente", "chocolate", "bombon", "bombom", "urso", "pelúcia", "cesta", "arranjo", "instagram"];
+for (const p of proibidas) if (texto.includes(p)) erros.push(`conteúdo fora do escopo de paisagismo: "${p}" aparece no texto da página`);
+const nomesFotos = [...html.matchAll(/fotos\/([^"]+)"/g)].map((m) => m[1]).join(" ").toLowerCase();
+for (const p of ["buque", "rosas-", "cesta", "caixa", "panda", "girassois"]) if (nomesFotos.includes(p)) erros.push(`foto fora do escopo no HTML: "${p}"`);
 if (!html.includes(`href="tel:+${WHATSAPP}"`)) avisos.push("link tel: do telefone ausente");
 
 // ---------- 4. JS ----------
