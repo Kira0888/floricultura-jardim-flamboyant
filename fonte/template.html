@@ -28,21 +28,17 @@
 
 <main id="conteudo">
 
-<!-- CENA 1 · A FRESTA — abertura, energia média -->
-<section class="cena abertura" id="inicio" data-fx-fixa data-fx-altura="2.6" data-fx-fundo="#0F1F17" data-fx-tinta="#F2EBDC">
+<!-- CENA 1 · A FLORESTA — abertura em vídeo, energia média -->
+<section class="cena abertura" id="inicio" data-fx-fixa data-fx-altura="1.8" data-fx-fundo="#0F1F17" data-fx-tinta="#F2EBDC">
   <div class="fx-palco">
-    <div class="selva" aria-hidden="true">
-      {{canto|seed=11|pal=escuro|lado=1|cls=canto esq}}
-      {{canto|seed=23|pal=escuro|lado=-1|cls=canto dir}}
+    <div class="abertura-video" aria-hidden="true">
+      <video data-fx-escala="1,1.14" autoplay loop muted playsinline preload="auto" poster="fotos/hero-floresta.webp" disablepictureinpicture tabindex="-1">
+        <source src="video/floresta.mp4" type="video/mp4">
+        <source src="video/floresta.webm" type="video/webm">
+      </video>
+      <div class="abertura-sombra"></div>
     </div>
-    <div class="fresta" aria-hidden="true">
-      <div class="fresta-brilho"></div>
-      <div class="fresta-dentro">
-        {{canto|seed=11|pal=vivo|lado=1|cls=canto esq}}
-        {{canto|seed=23|pal=vivo|lado=-1|cls=canto dir}}
-      </div>
-    </div>
-    <div class="abertura-texto">
+    <div class="abertura-texto" data-fx-y="0,-70" data-fx-opacidade="1,0" data-fx-faixa="0.3,0.8">
       <p class="rotulo" data-fx="surgir">Paisagismo · Plantas · Arranjos florais</p>
       <h1 data-fx="palavras" data-fx-duracao="900">Onde a luz encontra o jardim</h1>
       <p class="lead" data-fx="subir" data-fx-atraso="700">Floricultura do Jardim Flamboyant · ECM Gardens Flowers, em Luziânia – GO. Projetos que transformam ambientes comuns em refúgios vivos.</p>
@@ -65,58 +61,67 @@
   </div>
 </section>
 
-<!-- CENA 3 · DA FOTO AO JARDIM — o PICO, energia intensa -->
-<section class="cena pico" id="projeto" data-fx-fixa data-fx-altura="5.4" data-fx-etapas="4" data-fx-fundo="#10241A" data-fx-tinta="#F2EBDC">
-  <div class="fx-palco pico-palco">
+<!-- CENA 3 · DA FOTO AO JARDIM — o PICO, energia intensa. Os 4 passos avançam sozinhos, por tempo. -->
+<section class="cena pico" id="projeto" data-fx-fundo="#10241A" data-fx-tinta="#F2EBDC">
+  <div class="pico-palco">
     <div class="pico-texto">
       <p class="rotulo">Como funciona o projeto</p>
-      <div class="etapas">
-        <article class="fx-etapa">
+      <div class="etapas" id="etapas">
+        <article class="etapa">
           <p class="passo">Passo 1 de 4</p>
           <h2>Você manda uma foto.</h2>
           <p>Da varanda, da sala, do quintal ou da fachada. Pelo WhatsApp, do jeito que o espaço está hoje.</p>
         </article>
-        <article class="fx-etapa">
+        <article class="etapa">
           <p class="passo">Passo 2 de 4</p>
           <h2>A luz entra. O projeto nasce.</h2>
           <p>A gente olha o espaço, a luz e o uso, e desenha onde cada planta deve ficar. Residencial ou comercial.</p>
         </article>
-        <article class="fx-etapa">
+        <article class="etapa">
           <p class="passo">Passo 3 de 4</p>
           <h2>O jardim ganha corpo.</h2>
           <p>Plantas, vasos e composições chegam ao lugar certo. O ambiente comum começa a ficar vivo.</p>
         </article>
-        <article class="fx-etapa">
+        <article class="etapa">
           <p class="passo">Passo 4 de 4</p>
           <h2>E depois, cuidado.</h2>
           <p>Manutenção para o jardim continuar do jeito que foi desenhado. Do início ao fim, é com a gente.</p>
         </article>
       </div>
-      <div class="barra" aria-hidden="true"><i></i></div>
-    </div>
-
-    <div class="pico-cena">
-      <div class="quarto" role="img" aria-label="Ilustração: um ambiente vazio e sem vida que, aos poucos, recebe luz e se enche de plantas" data-fx-giro="-2.4,0" data-fx-faixa="0,0.2">
-        <div class="quarto-zoom" data-fx-escala="1,1.05">
-          {{sala}}
-          <div class="p p-vinha p-topo" data-fx-escala="0.15,1" data-fx-opacidade="0,1" data-fx-faixa="0.52,0.8">{{trepadeira|seed=9}}</div>
-          <div class="p p-pendente p-topo" data-fx-escala="0.15,1" data-fx-opacidade="0,1" data-fx-faixa="0.58,0.8">{{pendente|seed=4}}</div>
-          <div class="p p-folhagem" data-fx-escala="0.12,1" data-fx-opacidade="0,1" data-fx-faixa="0.5,0.7">{{folhagem|seed=3}}</div>
-          <div class="p p-palma" data-fx-escala="0.12,1" data-fx-opacidade="0,1" data-fx-faixa="0.54,0.73">{{palma|seed=8}}</div>
-          <div class="p p-mesa" data-fx-escala="0.15,1" data-fx-opacidade="0,1" data-fx-faixa="0.6,0.76">{{suculenta|seed=6}}</div>
-          <div class="p p-flores" data-fx-escala="0.15,1" data-fx-opacidade="0,1" data-fx-faixa="0.76,0.92">{{flores|seed=2}}</div>
-          <div class="raios" data-fx-opacidade="0,1" data-fx-faixa="0.2,0.5"></div>
-          <div class="motas-quarto" data-fx-opacidade="0,1" data-fx-faixa="0.25,0.5">{{motas|n=14|seed=3}}</div>
-          <div class="luz-quente" data-fx-opacidade="0,1" data-fx-faixa="0.2,0.52"></div>
-          <div class="frio" data-fx-opacidade="1,0" data-fx-faixa="0.2,0.5"></div>
-          <div class="croqui-a" data-fx-opacidade="0,1" data-fx-faixa="0.25,0.38">
-            <div class="croqui-b" data-fx-opacidade="1,0" data-fx-faixa="0.5,0.62">{{croqui}}</div>
-          </div>
+      <div class="controle" role="group" aria-label="Passos do projeto">
+        <div class="segs">
+          <button type="button" class="seg" aria-label="Ir ao passo 1: Você manda uma foto"><i></i></button>
+          <button type="button" class="seg" aria-label="Ir ao passo 2: A luz entra. O projeto nasce"><i></i></button>
+          <button type="button" class="seg" aria-label="Ir ao passo 3: O jardim ganha corpo"><i></i></button>
+          <button type="button" class="seg" aria-label="Ir ao passo 4: E depois, cuidado"><i></i></button>
         </div>
-        <span class="chip chip-antes" data-fx-opacidade="1,0" data-fx-faixa="0.14,0.28">Antes</span>
-        <span class="chip chip-depois" data-fx-opacidade="0,1" data-fx-faixa="0.84,0.94">Depois</span>
+        <button type="button" class="pausa" aria-pressed="false" aria-label="Pausar a apresentação automática"><span class="pausa-ico" aria-hidden="true"></span><span class="pausa-txt">Pausar</span></button>
       </div>
     </div>
+
+    <div class="pico-cena" data-fx="crescer" data-fx-duracao="1200">
+      <div class="quarto" role="img" aria-label="Ilustração: um ambiente vazio e sem vida que, aos poucos, recebe luz e se enche de plantas">
+        <div class="quarto-zoom">
+          {{sala}}
+          <div class="p p-vinha p-topo">{{trepadeira|seed=9}}</div>
+          <div class="p p-pendente p-topo">{{pendente|seed=4}}</div>
+          <div class="p p-folhagem">{{folhagem|seed=3}}</div>
+          <div class="p p-palma">{{palma|seed=8}}</div>
+          <div class="p p-mesa">{{suculenta|seed=6}}</div>
+          <div class="p p-flores">{{flores|seed=2}}</div>
+          <div class="raios"></div>
+          <div class="motas-quarto">{{motas|n=14|seed=3}}</div>
+          <div class="luz-quente"></div>
+          <div class="frio"></div>
+          <div class="croqui-a">
+            <div class="croqui-b">{{croqui}}</div>
+          </div>
+        </div>
+        <span class="chip chip-antes">Antes</span>
+        <span class="chip chip-depois">Depois</span>
+      </div>
+    </div>
+  
   </div>
 </section>
 
@@ -183,5 +188,6 @@
 </main>
 <script src="sites-incriveis.js" defer></script>
 <script src="luz.js" defer></script>
+<script src="etapas.js" defer></script>
 </body>
 </html>

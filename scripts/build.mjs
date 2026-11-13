@@ -16,8 +16,8 @@ import vm from "node:vm";
 const raiz = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(raiz, "dist");
 
-const ARQUIVOS = ["index.html", "site.css", "luz.js", "sites-incriveis.css", "sites-incriveis.js", "fontes.css"];
-const PASTAS = ["fonts", "fotos"];
+const ARQUIVOS = ["index.html", "site.css", "luz.js", "etapas.js", "sites-incriveis.css", "sites-incriveis.js", "fontes.css"];
+const PASTAS = ["fonts", "fotos", "video"];
 
 // contatos oficiais (única fonte da verdade para a checagem)
 const WHATSAPP = "5561994476001";
@@ -43,7 +43,7 @@ if ((html.match(/<h1[\s>]/g) || []).length !== 1) erros.push("deve haver exatame
 
 // referências locais (src/href) precisam existir
 const ehExterna = (u) => /^(https?:|mailto:|tel:|data:|#|\/\/)/.test(u);
-for (const m of html.matchAll(/\s(?:src|href)="([^"]+)"/g)) {
+for (const m of html.matchAll(/\s(?:src|href|poster)="([^"]+)"/g)) {
   const u = m[1];
   if (ehExterna(u)) continue;
   const alvo = u.split("#")[0].split("?")[0];
@@ -79,6 +79,18 @@ for (const m of html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
   if (!/rel="[^"]*noopener/.test(m[0])) erros.push(`link com target=_blank sem rel=noopener: ${m[0].slice(0, 90)}`);
 }
 
+// vídeo da abertura: atributos que fazem o autoplay funcionar em celular (mudo + inline) e quadro de reserva
+const video = html.match(/<video\b[^>]*>/);
+if (!video) erros.push("vídeo da abertura ausente (<video>)");
+else for (const attr of ["autoplay", "loop", "muted", "playsinline", "poster="]) {
+  if (!video[0].includes(attr)) erros.push(`<video> sem o atributo ${attr}`);
+}
+if (!/<source[^>]+type="video\/mp4"/.test(html)) erros.push("vídeo sem fonte MP4 (H.264), necessária para iOS/Safari");
+for (const f of readdirSync(join(raiz, "video"))) {
+  const mb = statSync(join(raiz, "video", f)).size / 1048576;
+  if (mb > 5) avisos.push(`video/${f} tem ${mb.toFixed(1)} MB (acima de 5 MB pesa na abertura)`);
+}
+
 // ---------- 3. conversão: WhatsApp e Instagram ----------
 const wa = [...html.matchAll(/href="(https:\/\/wa\.me\/[^"]+)"/g)].map((m) => m[1]);
 if (wa.length < 3) erros.push(`esperava ao menos 3 links de WhatsApp, achei ${wa.length}`);
@@ -95,7 +107,7 @@ if (!html.includes(`href="${INSTAGRAM}"`)) erros.push(`link do Instagram ausente
 if (!html.includes(`href="tel:+${WHATSAPP}"`)) avisos.push("link tel: do telefone ausente");
 
 // ---------- 4. JS ----------
-for (const f of ["luz.js", "sites-incriveis.js"]) {
+for (const f of ["luz.js", "etapas.js", "sites-incriveis.js"]) {
   try { new vm.Script(ler(f), { filename: f }); } catch (e) { erros.push(`${f}: erro de sintaxe: ${e.message}`); }
 }
 

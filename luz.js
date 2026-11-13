@@ -1,13 +1,42 @@
-/* Movimento-assinatura: a fresta de luz.
-   Vive na própria página (não no motor). A abertura e o pico leem o
-   progresso da rolagem; aqui ele ganha curva suave e um leve balanço
-   que acompanha o ponteiro, como luz atravessando folhagem. */
+/* Comportamentos da página que não cabem no motor de rolagem (o motor não é editado).
+   1. Vídeo da abertura: só toca enquanto está na tela; com movimento reduzido, não toca.
+   2. Ilustrações e passos só animam enquanto a cena está na tela (classe .em-tela).
+   3. Teclado: focar um link do trilho horizontal leva a rolagem até o cartão. */
 (function () {
   "use strict";
   var reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var video = document.querySelector(".abertura-video video");
+
+  // ---------- 1. vídeo da abertura ----------
+  if (video) {
+    if (reduzido) {
+      // movimento reduzido: fica o quadro de reserva (poster), sem reprodução
+      video.removeAttribute("autoplay");
+      video.pause();
+      video.preload = "none";
+    } else {
+      video.muted = true; // iOS exige o atributo/propriedade antes do play()
+      var tocar = function () {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () { /* autoplay barrado: o poster continua visível */ });
+      };
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (e) { if (e.isIntersecting) tocar(); else video.pause(); });
+        }, { threshold: 0.01 }).observe(video);
+      } else {
+        tocar();
+      }
+      // economia de bateria: pausa com a aba em segundo plano
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) video.pause(); else tocar();
+      });
+    }
+  }
+
   if (reduzido) return;
 
-  // ilustrações só se mexem enquanto a cena está na tela
+  // ---------- 2. animações só com a cena na tela ----------
   if ("IntersectionObserver" in window) {
     var vigia = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (e) { e.target.classList.toggle("em-tela", e.isIntersecting); });
@@ -15,8 +44,8 @@
     document.querySelectorAll(".cena").forEach(function (c) { vigia.observe(c); });
   }
 
-  // Teclado: ao focar um link do trilho horizontal, a rolagem vai até o cartão
-  // (o trilho é deslocado por transform; sem isto o foco desalinharia a cena).
+  // ---------- 3. teclado no trilho horizontal ----------
+  // O trilho é deslocado por transform; sem isto, focar um link fora da tela desalinharia a cena.
   var trilho = document.querySelector('[data-fx="trilho"]');
   if (trilho) {
     var secaoTrilho = trilho.closest("[data-fx-fixa]");
@@ -34,42 +63,4 @@
       window.scrollTo({ top: secaoTrilho.offsetTop + prog * percurso, behavior: "auto" });
     });
   }
-
-  var abertura = document.querySelector(".abertura");
-  var raios = document.querySelector(".raios");
-  if (!abertura) return;
-
-  var balanco = 0;       // -1..1, vindo do ponteiro
-  var alvo = 0;
-  var agendado = false;
-
-  function suave(t) { return t * t * (3 - 2 * t); } // smoothstep
-
-  function atualizar() {
-    agendado = false;
-    // a luz começa já visível e atravessa a tela com curva suave
-    var p = parseFloat(abertura.style.getPropertyValue("--progresso")) || 0;
-    abertura.style.setProperty("--p", (0.04 + 0.92 * suave(p) + balanco * 0.012).toFixed(4));
-
-    if (raios) {
-      var pico = document.querySelector(".pico");
-      var q = pico ? parseFloat(pico.style.getPropertyValue("--progresso")) || 0 : 0;
-      raios.style.setProperty("--sway", (Math.sin(q * 9) * 1.6 + balanco * 1.2).toFixed(2) + "deg");
-    }
-  }
-
-  function pedir() {
-    if (!agendado) { agendado = true; requestAnimationFrame(atualizar); }
-  }
-
-  window.addEventListener("scroll", pedir, { passive: true });
-  window.addEventListener("resize", pedir);
-  if (window.matchMedia("(pointer: fine)").matches) {
-    window.addEventListener("pointermove", function (e) {
-      alvo = (e.clientX / window.innerWidth) * 2 - 1;
-      balanco += (alvo - balanco) * 0.2;
-      pedir();
-    }, { passive: true });
-  }
-  pedir();
 })();

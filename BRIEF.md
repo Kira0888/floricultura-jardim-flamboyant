@@ -76,3 +76,14 @@
 **Conversão:** botão único `wa.me/5561994476001` com texto pré-preenchido pedindo foto do espaço. Repetido no menu superior, sem competir com o botão final.
 
 **Registro anti-repetição:** `construcoes.md` está vazio, então nenhum conflito. A linha será adicionada na entrega.
+
+
+---
+
+# Atualização 2026-11-13 (pedido do usuário)
+- **Cena 1 (abertura):** o fundo SVG com a fresta de luz foi substituído por vídeo de floresta com raios de sol
+  (`video/floresta.mp4` + `.webm`, sem áudio, loop de 8,5 s sem emenda; quadro de reserva em `fotos/hero-floresta.webp`).
+  Original: `gemini_generated_video_68474bbc.mp4` (pasta Vídeos do usuário; não vai ao repositório).
+  O texto sobe e some com a rolagem enquanto o vídeo dá um leve zoom. A "fresta de luz" segue no pico (raios e motas de luz).
+- **Cena 3 (pico):** deixou de ser cena fixa por rolagem. Os 4 passos avançam sozinhos a cada 6 s, em loop,
+  com pausa/continuar e segmentos clicáveis. Pausa quando a cena sai da tela. Com movimento reduzido: os 4 passos em lista, quarto pronto.
