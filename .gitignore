@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.vercel/
+verificacao/
+*.log
+.DS_Store
+.env
+.env.*
