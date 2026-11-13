@@ -143,7 +143,7 @@
       });
       if (visiveis > 0) iniciarMonitor();
     }, { rootMargin: "80px" });
-    document.querySelectorAll(".arco, .quarto, .promessa-arte").forEach(function (el) { vigia.observe(el); });
+    document.querySelectorAll(".quarto, .promessa-arte").forEach(function (el) { vigia.observe(el); });
     if (lembrado()) {
       // aparelho que já não aguentou nesta sessão: não liga o balanço de novo
       if (document.readyState === "complete") desligarBalanco();

@@ -93,3 +93,11 @@ Sem mudança de design. Motor com geometria em cache, pausa de animações por i
 do balanço por folha, vídeo carregado após o load, etapas sem reflow forçado. Detalhes e números no README.
 Atenção de licença: o motor `sites-incriveis.*` é da skill de Enzo Barbatto (LICENCA.md proíbe publicar a skill em
 repositório público). Publicar o SITE é permitido; manter o motor num repositório público é zona cinzenta.
+
+# Atualização 2026-11-13 (3)
+- **Abertura:** o vídeo agora é um buquê de rosas vermelhas em papel kraft (`gemini_generated_video_2b7030bf.mp4`),
+  no lugar da floresta (`video/hero.*`, poster `fotos/hero-poster.webp`, 1,2 MB em MP4).
+- **Catálogo e presentes:** só fotos reais (arranjos, bouquets, cestas, ursos). As ilustrações SVG saíram dessas duas cenas
+  (continuam no pico, na promessa e na folhagem do fechamento). Cartões 4:5, `object-fit: cover`, cantos de 16 px.
+- **Tipografia:** Instrument Serif (títulos) + Jost (textos). Antes: EB Garamond + Hanken Grotesk.
+- Fotos sem nomes de clientes visíveis (regra do usuário).

@@ -10,9 +10,9 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Jardim Flamboyant · ECM Gardens Flowers">
 <meta property="og:description" content="Paisagismo, plantas ornamentais e arranjos florais exclusivos em Luziânia – GO. Mande uma foto do seu espaço pelo WhatsApp.">
-<link rel="preload" href="fotos/hero-floresta.webp" as="image" type="image/webp" fetchpriority="high">
-<link rel="preload" href="fonts/eb-garamond.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/hanken-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fotos/hero-poster.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230F1F17%27/%3E%3Cpath d=%27M16 27C8 21 8 11 16 5c8 6 8 16 0 22z%27 fill=%27%23E8B866%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="fontes.css">
 <link rel="stylesheet" href="sites-incriveis.css">
@@ -29,11 +29,11 @@
 
 <main id="conteudo">
 
-<!-- CENA 1 · A FLORESTA — abertura em vídeo, energia média -->
+<!-- CENA 1 · ABERTURA — vídeo de um buquê de rosas, energia média -->
 <section class="cena abertura" id="inicio" data-fx-fixa data-fx-altura="1.8" data-fx-fundo="#0F1F17" data-fx-tinta="#F2EBDC">
   <div class="fx-palco">
     <div class="abertura-video" aria-hidden="true">
-      <video data-fx-escala="1,1.14" autoplay loop muted playsinline preload="none" poster="fotos/hero-floresta.webp" data-mp4="video/floresta.mp4" data-webm="video/floresta.webm" disablepictureinpicture disableremoteplayback tabindex="-1"></video>
+      <video data-fx-escala="1,1.14" autoplay loop muted playsinline preload="none" poster="fotos/hero-poster.webp" data-mp4="video/hero.mp4" data-webm="video/hero.webm" disablepictureinpicture disableremoteplayback tabindex="-1"></video>
       <div class="abertura-sombra"></div>
     </div>
     <div class="abertura-texto">
@@ -124,7 +124,7 @@
 </section>
 
 <!-- CENA 4 · A ESTUFA — catálogo em trilho horizontal, energia média -->
-<section class="cena catalogo" id="catalogo" data-fx-fixa data-fx-altura="4.8" data-fx-fundo="#E6D9BE" data-fx-tinta="#1F1A12">
+<section class="cena catalogo" id="catalogo" data-fx-fixa data-fx-altura="5" data-fx-fundo="#E6D9BE" data-fx-tinta="#1F1A12">
   <div class="fx-palco catalogo-palco">
     <div class="catalogo-cabeca">
       <p class="rotulo">Plantas e arranjos</p>
@@ -132,14 +132,16 @@
       <p class="lead">Plantas ornamentais e arranjos florais para cada ambiente e cada ocasião.</p>
     </div>
     <div data-fx="trilho" class="trilho">
-      <article class="cartao"><div class="arco">{{folhagem|seed=14}}</div><h3>Folhagens ornamentais</h3><p>Volume, textura e muito verde para salas, varandas e recepções.</p></article>
-      <article class="cartao"><div class="arco arco-foto"><img src="fotos/rosas-rosa.webp" alt="Buquê de rosas em tons de rosa e creme, embrulhado em papel kraft com laço rosa" width="324" height="408" decoding="async" fetchpriority="low"></div><h3>Buquê de rosas</h3><p>Rosas em tons suaves, embrulhadas em papel kraft com laço.</p></article>
-      <article class="cartao"><div class="arco arco-b">{{pendente|seed=31}}</div><h3>Plantas de pendurar</h3><p>Folhas que caem em cascata e suavizam cantos, janelas e estantes.</p></article>
-      <article class="cartao"><div class="arco arco-foto"><img src="fotos/girassois.webp" alt="Buquê de girassóis com folhagens e laço de fita dourado" width="324" height="408" decoding="async" fetchpriority="low"></div><h3>Girassóis</h3><p>Girassóis com folhagens e fita, cheios de cor e de luz.</p></article>
-      <article class="cartao"><div class="arco">{{palma|seed=18}}</div><h3>Para varanda e jardim</h3><p>Presença para áreas abertas, pensada para a luz do lugar.</p></article>
-      <article class="cartao"><div class="arco arco-foto"><img src="fotos/rosas-coloridas.webp" alt="Buquê de rosas vermelhas, brancas e amarelas em papel de juta com laço amarelo" width="324" height="408" decoding="async" fetchpriority="low"></div><h3>Rosas coloridas</h3><p>Rosas vermelhas, brancas e amarelas em papel de juta.</p></article>
-      <article class="cartao"><div class="arco arco-b">{{trio|seed=21}}</div><h3>Vasos e composições</h3><p>Combinações de plantas que convivem bem e valorizam o ambiente.</p></article>
-      <article class="cartao"><div class="arco arco-foto"><img src="fotos/caixa-vinho.webp" alt="Rosas vermelhas, vinho tinto e bombons dourados em uma caixa de presente" width="320" height="276" decoding="async" fetchpriority="low"></div><h3>Caixa de presente</h3><p>Rosas vermelhas, chocolates e vinho reunidos em uma só caixa.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-rosa.webp" alt="Buquê de rosas em tons de rosa e creme, embrulhado em papel kraft com laço rosa" width="324" height="408" decoding="async" fetchpriority="low"></div><h3>Buquê de rosas</h3><p>Rosas em tons suaves, embrulhadas em papel kraft com laço.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/buque-colorido.webp" alt="Buquê de flores variadas em tons de rosa, laranja e roxo, com fita rosa e embalagem rosé" width="322" height="405" decoding="async" fetchpriority="low"></div><h3>Buquê colorido</h3><p>Flores variadas em rosa, laranja e roxo, com fita e embalagem em tom rosé.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/girassois-gipsofila.webp" alt="Buquê de girassóis com gipsófila e embalagem dourada" width="322" height="405" decoding="async" fetchpriority="low"></div><h3>Girassóis e gipsófila</h3><p>Girassóis com gipsófila e embalagem dourada, cheios de cor e de luz.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-pretas-bombons.webp" alt="Rosas vermelhas com bombons dourados, em embalagem preta com laço vermelho" width="322" height="440" decoding="async" fetchpriority="low"></div><h3>Rosas e bombons</h3><p>Rosas vermelhas com bombons, em embalagem preta e laço vermelho.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-coloridas.webp" alt="Buquê de rosas vermelhas, brancas e amarelas em papel de juta com laço amarelo" width="322" height="408" decoding="async" fetchpriority="low"></div><h3>Rosas coloridas</h3><p>Rosas vermelhas, brancas e amarelas em papel de juta.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/buque-malha-bombons.webp" alt="Buquê de rosas em rosa, vermelho e creme com bombons, em embalagem de tela branca" width="322" height="405" decoding="async" fetchpriority="low"></div><h3>Buquê com bombons</h3><p>Rosas em rosa, vermelho e creme com bombons, em tela branca.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-kraft-raflia.webp" alt="Buquê de rosas vermelhas em papel kraft texturizado, com laço de ráfia" width="322" height="405" decoding="async" fetchpriority="low"></div><h3>Rosas em papel kraft</h3><p>Rosas vermelhas em papel kraft texturizado, com laço de ráfia.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-gipsofila-detalhe.webp" alt="Rosas vermelhas com gipsófila e flores brancas" width="322" height="405" decoding="async" fetchpriority="low"></div><h3>Rosas vermelhas</h3><p>Rosas bem abertas, com gipsófila e flores brancas.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/rosas-jornal.webp" alt="Buquê de rosas cor-de-rosa e brancas, embrulhado em papel com estampa de jornal" width="320" height="406" decoding="async" fetchpriority="low"></div><h3>Rosas e papel de jornal</h3><p>Rosas cor-de-rosa e brancas em papel com estampa de jornal.</p></article>
+      <article class="cartao"><div class="moldura"><img src="fotos/caixa-vinho.webp" alt="Rosas vermelhas, vinho tinto e bombons dourados em uma caixa de presente" width="320" height="276" decoding="async" fetchpriority="low"></div><h3>Caixa de presente</h3><p>Rosas vermelhas, chocolates e vinho reunidos em uma só caixa.</p></article>
       <article class="cartao cartao-fim"><p class="rotulo">Procurando outra coisa?</p><h3>Conte o que você imagina.</h3><p>Sua ideia pode virar um projeto. A conversa começa pelo WhatsApp.</p><a class="link-sublinhado" href="{{WA_ORCAMENTO}}" target="_blank" rel="noopener">Falar com a equipe</a></article>
     </div>
   </div>
@@ -150,9 +152,9 @@
   <div class="presentes-grade">
     <div class="colagem" data-fx="esquerda" data-fx-duracao="1300">
       <div class="aura" aria-hidden="true"></div>
-      <figure class="foto f1" data-fx-paralaxe="0.05"><img src="fotos/cesta-orquidea.webp" alt="Cesta de palha com orquídea branca, chocolates e um urso de pelúcia vermelho" width="324" height="442" decoding="async" fetchpriority="low"></figure>
-      <figure class="foto f2" data-fx-paralaxe="0.14"><img src="fotos/rosas-jornal.webp" alt="Buquê de rosas cor-de-rosa e brancas, embrulhado em papel com estampa de jornal" width="320" height="406" decoding="async" fetchpriority="low"></figure>
-      <figure class="foto f3" data-fx-paralaxe="0.1"><img src="fotos/rosas-vermelhas-urso.webp" alt="Buquê de rosas vermelhas com gipsófila ao lado de um urso de pelúcia embalado com laço vermelho" width="322" height="408" decoding="async" fetchpriority="low"></figure>
+      <figure class="foto f1" data-fx-paralaxe="0.05"><img src="fotos/cesta-orquidea-vinho.webp" alt="Cesta de palha com orquídea rosa, vinho tinto, bombons e doces" width="322" height="405" decoding="async" fetchpriority="low"></figure>
+      <figure class="foto f2" data-fx-paralaxe="0.14"><img src="fotos/panda-rosas.webp" alt="Panda de pelúcia gigante segurando um buquê de rosas vermelhas com gipsófila em papel de juta" width="288" height="440" decoding="async" fetchpriority="low"></figure>
+      <figure class="foto f3" data-fx-paralaxe="0.1"><img src="fotos/caixa-rosas-urso-amo.webp" alt="Caixa preta com rosas vermelhas e laço vermelho ao lado de um ursinho de pelúcia branco com a palavra AMO" width="322" height="440" decoding="async" fetchpriority="low"></figure>
     </div>
     <div class="presentes-texto">
       <p class="rotulo" data-fx="surgir">Presentes</p>
