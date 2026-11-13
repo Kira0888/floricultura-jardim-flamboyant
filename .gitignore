@@ -6,3 +6,5 @@ verificacao/
 .DS_Store
 .env
 .env.*
+.vercel
+.env*
