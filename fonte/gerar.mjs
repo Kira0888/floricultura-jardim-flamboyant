@@ -7,7 +7,7 @@ const raiz = fileURLToPath(new URL('.', import.meta.url));
 let html = fs.readFileSync(raiz + 'template.html', 'utf8');
 
 // WhatsApp oficial (único ponto de edição). Formato: 55 + DDD + número.
-const NUMERO = '5561994476001';
+const NUMERO = '5521993682078';
 const msg = (t) => `https://wa.me/${NUMERO}?text=${encodeURIComponent(t)}`;
 html = html
   .replaceAll('{{WA_PROJETO}}', msg('Olá! Gostaria de solicitar um projeto de paisagismo para o meu imóvel. Posso enviar fotos do espaço?'))

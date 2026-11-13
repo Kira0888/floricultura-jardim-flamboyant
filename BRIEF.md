@@ -112,3 +112,24 @@ incluindo fotos, textos e as ilustrações SVG. O build impede a volta dessas pa
 - **Cenas:** abertura (vídeo de jardim) · valorização do imóvel · serviços (cartões de vidro) · como trabalhamos (4 passos por tempo, uma foto por passo) · projetos (mosaico assimétrico em grade) · equipe em campo (trilho horizontal) · fechamento.
 - **Fotos:** 15 recortes de prints do Instagram (~330 px; sem selos de vídeo). A foto da equipe mostra o uniforme ECM Gardens com telefone e Instagram da empresa legíveis (parcialmente), conferir. Sem fotos "antes/depois" reais (não há par do mesmo espaço).
 - **Cores:** verdes profundos, concreto/cinza arquitetônico, argila, acento âmbar. Tipografia: Instrument Serif + Jost.
+
+# Atualização 2026-11-13 (4)
+- **Clipes de campo:** 3 vídeos do WhatsApp (19.25.15 poda de topiaria, 19.25.16 poda de cerca-viva em andaime, 19.25.17 plantio)
+  no trilho "Em campo", no lugar das fotos de poda/escada/uniforme. Mantida a foto "Gramados".
+- **Serviços:** vidro mais translúcido (blur 22 px), fundo desfocado forte (a foto tem ~330 px) e grade assimétrica 7/5 e 5/7 com alturas travadas.
+- O vídeo 19.25.17 mostra a camisa do uniforme de costas (telefone/Instagram da empresa, pouco legíveis em baixa resolução).
+
+# Contatos oficiais (atualizados em 2026-11-13, a pedido do usuário)
+- **WhatsApp:** (21) 99368-2078 → `https://wa.me/5521993682078` (substitui (61) 99447-6001; resolve a dúvida do número anterior).
+- **Instagram:** https://www.instagram.com/ecmgardens
+
+# Atualização 2026-11-13 (5)
+- **Hero:** vídeo do lago ornamental (`r.mp4`, 1,9 MB), com overlay em camadas (película + vinheta + miolo + topo/base). Contraste medido do texto no pior quadro: ≥ 5:1.
+- **Vídeos "travados":** causa provável = "Reduzir movimento" ligado no sistema (o site não autoplaya de propósito). Agora há botão Reproduzir/Pausar em todos os vídeos.
+- Servidor local passou a suportar Range (Safari exige).
+
+# Ajuste da hero (2026-11-13, 6)
+- Removidos: zoom do vídeo ao rolar e a abertura "presa" na tela (agora rola 1:1, altura = 1 tela, sem transform/will-change).
+- Vídeo refeito: origem `r.mp4` (lago). Trecho 3–10 s (suave) -> minterpolate 60 fps -> loop com xfade 1,2 s -> H.264 crf 24 (1,8 MB), sem GOP forçado.
+  Comando-base: ffmpeg -ss 3 -t 7 -i r.mp4 -filter_complex "[0:v]minterpolate=fps=60:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,scale=1280:720,format=yuv420p,split=3[a][b][c];[a]trim=0:1.2,setpts=PTS-STARTPTS[head];[b]trim=5.8:7.0,setpts=PTS-STARTPTS[tail];[c]trim=1.2:5.8,setpts=PTS-STARTPTS[mid];[tail][head]xfade=transition=fade:duration=1.2:offset=0[mix];[mix][mid]concat=n=2:v=1:a=0[v]" ...
+- Nota de medição: testes de rolagem com `scrollTo` precisam de `behavior:'instant'` (o site usa scroll-behavior:smooth, que mascara o custo). Com isso, TANTO a versão publicada quanto a atual mostram ~15–20 quadros lentos a cada troca de cor de fundo (fundo viaja) em CPU 3–6x mais lenta; custo pré-existente da transição de color/background do body (restyle da página inteira). Não alterado.

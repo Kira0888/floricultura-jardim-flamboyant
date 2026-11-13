@@ -29,13 +29,14 @@
 
 <main id="conteudo">
 
-<!-- CENA 1 · ABERTURA — vídeo de jardim projetado, energia média -->
-<section class="cena abertura" id="inicio" data-fx-fixa data-fx-altura="1.8" data-fx-fundo="#0F1F17" data-fx-tinta="#F0EFE9">
+<!-- CENA 1 · ABERTURA — vídeo de um lago ornamental, energia média -->
+<section class="cena abertura" id="inicio" data-fx-fundo="#0F1F17" data-fx-tinta="#F0EFE9">
   <div class="fx-palco">
     <div class="abertura-video" aria-hidden="true">
-      <video data-fx-escala="1,1.14" autoplay loop muted playsinline preload="none" poster="fotos/hero-poster.webp" data-mp4="video/hero.mp4" data-webm="video/hero.webm" disablepictureinpicture disableremoteplayback tabindex="-1"></video>
+      <video autoplay loop muted playsinline preload="none" poster="fotos/hero-poster.webp" data-mp4="video/hero.mp4" data-webm="video/hero.webm" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="Vídeo de fundo: lago ornamental cercado de plantas"></video>
       <div class="abertura-sombra"></div>
     </div>
+    <button type="button" class="vctl vctl-hero vctl-parado" aria-pressed="false"><span class="vctl-ico" aria-hidden="true"></span><span class="vctl-txt">Reproduzir</span></button>
     <div class="abertura-texto">
       <p class="rotulo" data-fx="surgir">Projetos · Jardins · Irrigação automatizada · Manutenção</p>
       <h1 data-fx="palavras" data-fx-duracao="900">Paisagismo que valoriza seu imóvel</h1>
@@ -71,10 +72,10 @@
       <p class="lead" data-fx="subir" data-fx-atraso="150">Atendemos Brasília e região, com sede em Luziânia – GO.</p>
     </div>
     <div class="servicos-cards">
-      <article class="vidro" data-fx="subir"><h3>Projetos</h3><p>Projeto paisagístico pensado para o imóvel, a luz do lugar e o uso de cada espaço.</p></article>
-      <article class="vidro" data-fx="subir" data-fx-atraso="120"><h3>Jardins</h3><p>Implantação de jardins: plantio, vasos, gramados e composições que valorizam a fachada.</p></article>
-      <article class="vidro" data-fx="subir" data-fx-atraso="240"><h3>Irrigação automatizada</h3><p>Sistemas de irrigação automatizada para o jardim se manter saudável com menos trabalho.</p></article>
-      <article class="vidro" data-fx="subir" data-fx-atraso="360"><h3>Manutenção de áreas verdes</h3><p>Poda, gramados, jardins verticais e rotina de cuidados, com equipe uniformizada.</p></article>
+      <article class="vidro v1" data-fx="subir"><span class="vidro-num" aria-hidden="true">01</span><h3>Projetos</h3><p>Projeto paisagístico pensado para o imóvel, a luz do lugar e o uso de cada espaço.</p></article>
+      <article class="vidro v2" data-fx="subir" data-fx-atraso="120"><span class="vidro-num" aria-hidden="true">02</span><h3>Jardins</h3><p>Implantação de jardins: plantio, vasos, gramados e composições que valorizam a fachada.</p></article>
+      <article class="vidro v3" data-fx="subir" data-fx-atraso="240"><span class="vidro-num" aria-hidden="true">03</span><h3>Irrigação automatizada</h3><p>Sistemas de irrigação automatizada para o jardim se manter saudável com menos trabalho.</p></article>
+      <article class="vidro v4" data-fx="subir" data-fx-atraso="360"><span class="vidro-num" aria-hidden="true">04</span><h3>Manutenção de áreas verdes</h3><p>Poda, gramados, jardins verticais e rotina de cuidados, com equipe uniformizada.</p></article>
     </div>
   </div>
 </section>
@@ -150,13 +151,13 @@
     <div class="equipe-cabeca">
       <p class="rotulo">Em campo</p>
       <h2 class="display">Manutenção profissional, <em>de perto</em>.</h2>
-      <p class="lead">Equipe uniformizada e equipada para poda, gramados e jardins verticais.</p>
+      <p class="lead">Veja a equipe da ECM Gardens em ação: poda, plantio e manutenção de jardins.</p>
     </div>
     <div data-fx="trilho" class="trilho">
+      <article class="cartao"><div class="moldura"><video class="clipe" autoplay loop muted playsinline preload="none" poster="fotos/clipe-cerca.webp" data-mp4="video/clipe-cerca.mp4" data-webm="video/clipe-cerca.webm" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="Vídeo: profissional da ECM Gardens podando uma cerca-viva alta, de cima de um andaime"></video><button type="button" class="vctl vctl-parado" aria-pressed="false"><span class="vctl-ico" aria-hidden="true"></span><span class="vctl-txt">Reproduzir</span></button></div><h3>Cercas-vivas em altura</h3><p>Poda em andaime para manter o paredão verde alinhado e uniforme.</p></article>
+      <article class="cartao"><div class="moldura"><video class="clipe" autoplay loop muted playsinline preload="none" poster="fotos/clipe-poda.webp" data-mp4="video/clipe-poda.mp4" data-webm="video/clipe-poda.webm" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="Vídeo: profissional da ECM Gardens modelando um arbusto arredondado"></video><button type="button" class="vctl vctl-parado" aria-pressed="false"><span class="vctl-ico" aria-hidden="true"></span><span class="vctl-txt">Reproduzir</span></button></div><h3>Poda e acabamento</h3><p>Aparar, modelar e limpar: o detalhe que faz o jardim parecer novo.</p></article>
+      <article class="cartao"><div class="moldura"><video class="clipe" autoplay loop muted playsinline preload="none" poster="fotos/clipe-plantio.webp" data-mp4="video/clipe-plantio.mp4" data-webm="video/clipe-plantio.webm" disablepictureinpicture disableremoteplayback tabindex="-1" aria-label="Vídeo: profissional da ECM Gardens plantando folhagens ao lado de uma fachada"></video><button type="button" class="vctl vctl-parado" aria-pressed="false"><span class="vctl-ico" aria-hidden="true"></span><span class="vctl-txt">Reproduzir</span></button></div><h3>Plantio e implantação</h3><p>Plantas e folhagens posicionadas com cuidado, no lugar certo do projeto.</p></article>
       <article class="cartao"><div class="moldura"><img src="fotos/equipe-cortador-jardim.webp" alt="Profissional uniformizado cortando o gramado de um jardim com caminhos de pedra" width="328" height="404" decoding="async" fetchpriority="low"></div><h3>Gramados</h3><p>Corte regular e acabamento limpo, mesmo entre os caminhos de pedra.</p></article>
-      <article class="cartao"><div class="moldura"><img src="fotos/equipe-escada-cerca.webp" alt="Dois profissionais em andaime podando uma cerca-viva alta" width="328" height="404" decoding="async" fetchpriority="low"></div><h3>Cercas-vivas</h3><p>Poda em altura, com andaime, para manter o paredão verde alinhado.</p></article>
-      <article class="cartao"><div class="moldura"><img src="fotos/equipe-poda-cerca.webp" alt="Profissional aparando cerca-viva ao longo de um caminho de pedra portuguesa" width="328" height="404" decoding="async" fetchpriority="low"></div><h3>Poda e acabamento</h3><p>Aparar, modelar e limpar: o detalhe que faz o jardim parecer novo.</p></article>
-      <article class="cartao"><div class="moldura"><img src="fotos/equipe-costas-uniforme.webp" alt="Profissional de costas com uniforme verde da ECM Gardens" width="328" height="404" decoding="async" fetchpriority="low"></div><h3>Equipe uniformizada</h3><p>Profissionais identificados, com o uniforme da ECM Gardens.</p></article>
       <article class="cartao cartao-fim"><p class="rotulo">Seu imóvel</p><h3>Vamos conversar?</h3><p>Conte sobre o espaço e agende uma visita técnica.</p><a class="link-sublinhado" href="{{WA_VISITA}}" target="_blank" rel="noopener">Agendar visita técnica</a></article>
     </div>
   </div>
@@ -170,7 +171,7 @@
     <h2 class="display gigante" data-fx="palavras" data-fx-duracao="1100">Vamos valorizar o seu imóvel?</h2>
     <p class="lead" data-fx="subir" data-fx-atraso="600">Conte sobre o espaço e agende uma visita técnica. Atendemos Brasília e região, com sede em Luziânia – GO.</p>
     <p data-fx="crescer" data-fx-atraso="800"><a class="botao" href="{{WA_VISITA}}" target="_blank" rel="noopener">Agendar visita técnica</a></p>
-    <p class="contatos" data-fx="surgir" data-fx-atraso="900"><a href="tel:+5561994476001">(61) 99447-6001</a></p>
+    <p class="contatos" data-fx="surgir" data-fx-atraso="900"><a href="tel:+5521993682078">(21) 99368-2078</a><span aria-hidden="true">·</span><a href="https://www.instagram.com/ecmgardens" target="_blank" rel="noopener">Instagram @ecmgardens</a></p>
   </div>
   <footer class="rodape">
     <p>ECM Gardens | Paisagismo · Brasília e região · Sede em Luziânia – GO</p>

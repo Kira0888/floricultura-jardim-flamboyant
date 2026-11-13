@@ -17,12 +17,12 @@ npm run gerar      # recria index.html a partir de fonte/ (ilustrações + links
 |---|---|
 | `index.html` | A página (gerada por `npm run gerar`; as ilustrações SVG ficam embutidas) |
 | `site.css` | Identidade visual, layout e animações da página |
-| `luz.js` | Vídeo da abertura (toca só na tela) e teclado no trilho horizontal |
+| `luz.js` | Vídeos (abertura e clipes em campo: carregam sob demanda e tocam só na tela) e teclado no trilho horizontal |
 | `etapas.js` | Cena 4 ("Como trabalhamos"): os 4 passos avançam sozinhos por tempo, uma foto por passo, com pausa e navegação por segmentos |
 | `sites-incriveis.js` / `.css` | Motor de rolagem (`data-fx-*`). Não editar |
 | `fontes.css`, `fonts/` | Fontes hospedadas junto do site: Instrument Serif (títulos) e Jost (textos) |
 | `fotos/` | Fotos reais de paisagismo (WebP) e o quadro de reserva do vídeo (`hero-poster.webp`) |
-| `video/` | Vídeo da abertura, um jardim projetado (`hero.mp4` H.264 e `hero.webm` VP9), sem áudio, loop de 8,5 s |
+| `video/` | Vídeo da abertura, um lago ornamental (`hero.*`) e 3 clipes da equipe em campo (`clipe-cerca/poda/plantio.*`), MP4 H.264 + WebM VP9, sem áudio, loops de ~8 s |
 | `fonte/` | Gerador do HTML: `template.html` (textos e estrutura) e `gerar.mjs` (links do WhatsApp) |
 | `scripts/build.mjs` | Validação + cópia para `dist/` |
 | `vercel.json` | Build, pasta de saída e cabeçalhos de cache/segurança |
@@ -32,7 +32,7 @@ npm run gerar      # recria index.html a partir de fonte/ (ilustrações + links
 
 Os textos ficam em `fonte/template.html`. Depois de editar, rode `npm run gerar` e `npm run build`.
 O número do WhatsApp e as mensagens pré-preenchidas (solicitar projeto, agendar visita técnica) ficam em `fonte/gerar.mjs`.
-O `npm run build` falha se o WhatsApp não for o número oficial, se faltarem os links de projeto e de visita técnica,
+O `npm run build` falha se o WhatsApp não for o número oficial (21) 99368-2078, se faltar o link do Instagram (@ecmgardens), se faltarem os links de projeto e de visita técnica,
 ou se voltar qualquer conteúdo de floricultura (buquês, presentes, arranjos) no texto ou nos nomes das fotos.
 
 ## Deploy
@@ -83,3 +83,26 @@ Medido com rolagem completa, CPU 4×/6× mais lenta e GPU real; a página pós-o
 O que foi testado e descartado por não dar ganho medido ou por mudar o layout: `will-change` indiscriminado (grupos
 dentro de um SVG não viram camadas), `content-visibility: auto` (alterou a altura total da página) e animar as folhagens
 grandes dos cantos.
+
+## Clipes em campo e grade de serviços
+
+- Os 3 clipes (`video/clipe-*.mp4/.webm`, 480×854, ~1–1,7 MB cada) foram recortados de vídeos maiores do WhatsApp (~9 s) com
+  dissolução de 1,2 s para o loop não dar salto. Cada um tem quadro de reserva em `fotos/clipe-*.webp`.
+  Só baixam quando o trilho chega perto da tela e só tocam enquanto visíveis.
+- "O que fazemos": grade de 12 colunas, cartões 7/5 e 5/7 (larguras diferentes) com `grid-auto-rows: 1fr` e `align-items: stretch`,
+  que trava a altura igual em todas as fileiras. No celular, empilha com larguras diferentes.
+
+## Vídeos: autoplay e botão Reproduzir/Pausar
+
+Todos os vídeos têm `autoplay loop muted playsinline`. Quando o navegador não deixa tocar sozinho (sistema com "Reduzir movimento",
+economia de bateria do iOS, conexão econômica), o vídeo mostra o quadro de reserva e um botão **Reproduzir**; nada fica "travado" sem
+explicação. Se os vídeos aparecerem parados, confira primeiro a opção de acessibilidade "Reduzir animações/movimento" do sistema.
+Abra o site por `npm start` (http), não clicando no `index.html`: por `file://` o navegador bloqueia as fontes.
+
+## Vídeo da abertura: por que 60 fps e loop de 5,8 s
+
+O vídeo original (24 fps) foi convertido de 30 fps e tem um "tropeço" a cada 4 quadros nos primeiros 2,4 s (a câmera arranca).
+O loop usa só o trecho suave (3–10 s do original), interpolado por movimento para 60 fps (`minterpolate`), com dissolução de 1,2 s
+entre o fim e o começo. O quadro de reserva (`hero-poster.webp`) é o 1º quadro do vídeo, para a troca não dar "pulo".
+Para trocar o vídeo: veja o filtro ffmpeg em `BRIEF.md` e mantenha os nomes `video/hero.mp4` e `video/hero.webm`.
+A abertura rola junto com a página (sem zoom, sem cena presa).

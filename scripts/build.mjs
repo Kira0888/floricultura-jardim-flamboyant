@@ -20,7 +20,8 @@ const ARQUIVOS = ["index.html", "site.css", "luz.js", "etapas.js", "sites-incriv
 const PASTAS = ["fonts", "fotos", "video"];
 
 // contatos oficiais (única fonte da verdade para a checagem)
-const WHATSAPP = "5561994476001";
+const WHATSAPP = "5521993682078";
+const INSTAGRAM = "https://www.instagram.com/ecmgardens";
 
 const erros = [];
 const avisos = [];
@@ -80,17 +81,25 @@ for (const m of html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
   if (!/rel="[^"]*noopener/.test(m[0])) erros.push(`link com target=_blank sem rel=noopener: ${m[0].slice(0, 90)}`);
 }
 
-// vídeo da abertura: atributos que fazem o autoplay funcionar em celular (mudo + inline) e quadro de reserva
-const video = html.match(/<video\b[^>]*>/);
-if (!video) erros.push("vídeo da abertura ausente (<video>)");
-else for (const attr of ["autoplay", "loop", "muted", "playsinline", "poster=", "data-mp4="]) {
-  if (!video[0].includes(attr)) erros.push(`<video> sem o atributo ${attr}`);
+// vídeos: atributos que fazem o autoplay funcionar em celular (mudo + inline), quadro de reserva e fonte MP4 (iOS/Safari)
+const videos = [...html.matchAll(/<video\b[^>]*>/g)].map((m) => m[0]);
+if (!videos.length) erros.push("vídeo da abertura ausente (<video>)");
+for (const v of videos) {
+  const id = (v.match(/data-mp4="([^"]+)"/) || [])[1] || v.slice(0, 60);
+  for (const attr of ["autoplay", "loop", "muted", "playsinline", "poster=", "data-mp4=", 'preload="none"']) {
+    if (!v.includes(attr)) erros.push(`<video ${id}> sem o atributo ${attr}`);
+  }
+  if (!/data-mp4="[^"]+\.mp4"/.test(v)) erros.push(`<video ${id}> sem fonte MP4 (H.264), necessária para iOS/Safari`);
 }
-if (video && !/data-mp4="[^"]+\.mp4"/.test(video[0])) erros.push("vídeo sem fonte MP4 (H.264), necessária para iOS/Safari");
+const botoes = (html.match(/<button[^>]*class="vctl[ "]/g) || []).length;
+if (botoes !== videos.length) erros.push(`cada vídeo precisa do botão Reproduzir/Pausar: ${videos.length} vídeo(s), ${botoes} botão(ões)`);
+if (videos.length < 4) erros.push(`esperava a abertura e 3 clipes de campo, achei ${videos.length} vídeo(s)`);
 for (const f of readdirSync(join(raiz, "video"))) {
   const mb = statSync(join(raiz, "video", f)).size / 1048576;
-  if (mb > 5) avisos.push(`video/${f} tem ${mb.toFixed(1)} MB (acima de 5 MB pesa na abertura)`);
+  if (mb > 5) avisos.push(`video/${f} tem ${mb.toFixed(1)} MB (acima de 5 MB pesa)`);
 }
+const usadosVideo = new Set([...html.matchAll(/video\/([^"]+)"/g)].map((m) => m[1]));
+for (const f of readdirSync(join(raiz, "video"))) if (!usadosVideo.has(f)) avisos.push(`vídeo não usado no HTML: video/${f}`);
 
 // ---------- 3. conversão: WhatsApp e Instagram ----------
 const wa = [...html.matchAll(/href="(https:\/\/wa\.me\/[^"]+)"/g)].map((m) => m[1]);
@@ -109,11 +118,15 @@ if (!/paisagismo/i.test(principal)) erros.push("a mensagem principal do WhatsApp
 
 // escopo: a página é só de paisagismo. Nada de floricultura/presentes pode voltar por engano.
 const texto = html.replace(/<(script|style)[\s\S]*?<\/\1>/g, "").replace(/<[^>]+>/g, " ").toLowerCase();
-const proibidas = ["buquê", "buque", "floricultura", "presente", "chocolate", "bombon", "bombom", "urso", "pelúcia", "cesta", "arranjo", "instagram"];
+const proibidas = ["buquê", "buque", "floricultura", "presente", "chocolate", "bombon", "bombom", "urso", "pelúcia", "cesta", "arranjo"];
 for (const p of proibidas) if (texto.includes(p)) erros.push(`conteúdo fora do escopo de paisagismo: "${p}" aparece no texto da página`);
 const nomesFotos = [...html.matchAll(/fotos\/([^"]+)"/g)].map((m) => m[1]).join(" ").toLowerCase();
 for (const p of ["buque", "rosas-", "cesta", "caixa", "panda", "girassois"]) if (nomesFotos.includes(p)) erros.push(`foto fora do escopo no HTML: "${p}"`);
 if (!html.includes(`href="tel:+${WHATSAPP}"`)) avisos.push("link tel: do telefone ausente");
+if (!html.includes(`href="${INSTAGRAM}"`)) erros.push(`link do Instagram ausente ou diferente de ${INSTAGRAM}`);
+// nenhum número antigo pode sobrar no texto da página
+if (/99447-?6001|5561994476001/.test(html)) erros.push("o número de WhatsApp antigo ainda aparece na página");
+if (!html.includes("(21) 99368-2078")) erros.push("o número (21) 99368-2078 deve aparecer escrito na página");
 
 // ---------- 4. JS ----------
 for (const f of ["luz.js", "etapas.js", "sites-incriveis.js"]) {
