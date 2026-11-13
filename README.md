@@ -59,3 +59,27 @@ e mire em menos de ~3 MB. Com movimento reduzido o vídeo não toca: aparece só
 ## Tempo dos passos (cena 3)
 
 Cada passo dura 6 s (`--tempo` em `.seg.ativo i`, no `site.css`). Para mudar, altere essa variável.
+
+## Desempenho (sem alterar o visual)
+
+Medido com rolagem completa, CPU 4×/6× mais lenta e GPU real; a página pós-otimização tem a mesma geometria
+(altura total e posição de cada elemento idênticas) e é idêntica pixel a pixel nas cenas fixas.
+
+- **Motor de rolagem** (`sites-incriveis.js`, cópia otimizada; autoria mantida): mede a geometria das cenas e da
+  paralaxe em lote (início, redimensionamento, mudança de altura da página) e não a cada quadro, então a rolagem
+  não faz nenhuma leitura de layout. Cena que não mudou de progresso não reescreve estilo.
+- **Animações** (`luz.js`): cada ilustração só anima enquanto está à vista (antes, a seção inteira). A pausa usa a
+  API de Animações, sem classes em ancestrais (que reavaliavam o estilo de milhares de nós SVG).
+- **Qualidade adaptativa** (`luz.js`): o balanço por folha repinta SVG na thread principal. Se o aparelho ficar
+  abaixo de ~50 fps por ~1,5 s com ilustrações animadas na tela, o balanço por folha é desligado (a ilustração fica
+  na pose original). Aparelhos capazes nunca perdem o balanço. A decisão fica na sessão (`sessionStorage`).
+- **Passos da cena 3** (`etapas.js`): sem leitura de layout; a barra reinicia sem reflow forçado e só corre com a
+  cena na tela.
+- **Vídeo da abertura**: o arquivo só começa a baixar depois do carregamento da página (o quadro de reserva, com
+  `preload` de prioridade alta, ocupa o lugar), e não é baixado com movimento reduzido nem em conexão econômica/2G.
+- **Imagens**: dimensões declaradas (sem salto de layout), `decoding="async"` e `fetchpriority="low"` abaixo da dobra.
+- `--progresso` (escrita a cada quadro pelo motor) é registrada sem herança (`@property`).
+
+O que foi testado e descartado por não dar ganho medido ou por mudar o layout: `will-change` indiscriminado (grupos
+dentro de um SVG não viram camadas), `content-visibility: auto` (alterou a altura total da página) e animar as folhagens
+grandes dos cantos.

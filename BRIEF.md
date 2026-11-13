@@ -87,3 +87,9 @@
   O texto sobe e some com a rolagem enquanto o vídeo dá um leve zoom. A "fresta de luz" segue no pico (raios e motas de luz).
 - **Cena 3 (pico):** deixou de ser cena fixa por rolagem. Os 4 passos avançam sozinhos a cada 6 s, em loop,
   com pausa/continuar e segmentos clicáveis. Pausa quando a cena sai da tela. Com movimento reduzido: os 4 passos em lista, quarto pronto.
+
+# Otimização de desempenho (2026-11-13)
+Sem mudança de design. Motor com geometria em cache, pausa de animações por ilustração visível, qualidade adaptativa
+do balanço por folha, vídeo carregado após o load, etapas sem reflow forçado. Detalhes e números no README.
+Atenção de licença: o motor `sites-incriveis.*` é da skill de Enzo Barbatto (LICENCA.md proíbe publicar a skill em
+repositório público). Publicar o SITE é permitido; manter o motor num repositório público é zona cinzenta.

@@ -43,7 +43,7 @@ if ((html.match(/<h1[\s>]/g) || []).length !== 1) erros.push("deve haver exatame
 
 // referências locais (src/href) precisam existir
 const ehExterna = (u) => /^(https?:|mailto:|tel:|data:|#|\/\/)/.test(u);
-for (const m of html.matchAll(/\s(?:src|href|poster)="([^"]+)"/g)) {
+for (const m of html.matchAll(/\s(?:src|href|poster|data-mp4|data-webm)="([^"]+)"/g)) {
   const u = m[1];
   if (ehExterna(u)) continue;
   const alvo = u.split("#")[0].split("?")[0];
@@ -82,10 +82,10 @@ for (const m of html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)) {
 // vídeo da abertura: atributos que fazem o autoplay funcionar em celular (mudo + inline) e quadro de reserva
 const video = html.match(/<video\b[^>]*>/);
 if (!video) erros.push("vídeo da abertura ausente (<video>)");
-else for (const attr of ["autoplay", "loop", "muted", "playsinline", "poster="]) {
+else for (const attr of ["autoplay", "loop", "muted", "playsinline", "poster=", "data-mp4="]) {
   if (!video[0].includes(attr)) erros.push(`<video> sem o atributo ${attr}`);
 }
-if (!/<source[^>]+type="video\/mp4"/.test(html)) erros.push("vídeo sem fonte MP4 (H.264), necessária para iOS/Safari");
+if (video && !/data-mp4="[^"]+\.mp4"/.test(video[0])) erros.push("vídeo sem fonte MP4 (H.264), necessária para iOS/Safari");
 for (const f of readdirSync(join(raiz, "video"))) {
   const mb = statSync(join(raiz, "video", f)).size / 1048576;
   if (mb > 5) avisos.push(`video/${f} tem ${mb.toFixed(1)} MB (acima de 5 MB pesa na abertura)`);

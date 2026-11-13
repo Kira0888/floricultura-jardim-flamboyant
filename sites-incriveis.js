@@ -5,6 +5,13 @@
  * A página declara efeitos com atributos data-fx-*; o motor observa a
  * rolagem e anima. Nada aqui conhece o conteúdo da página: comportamento
  * sob medida deve viver em <script> da própria página, nunca neste arquivo.
+ *
+ * Cópia modificada para uso próprio (LICENCA.md, item 2 de "O que você PODE fazer"):
+ * otimização de desempenho do ciclo de rolagem, sem alterar o comportamento visível.
+ *  - a geometria das cenas e da paralaxe é medida em lote (início, redimensionamento e
+ *    mudança de altura da página) e não a cada quadro: zero leituras de layout durante a rolagem;
+ *  - cenas que não mudaram de progresso não reescrevem estilos;
+ *  - elementos de paralaxe distantes da tela são ignorados.
  */
 (function () {
   "use strict";
@@ -173,6 +180,7 @@
   //   data-fx-etapas="4"              seção ganha data-etapa="1..4" (CSS decide o resto)
 
   var cenas = [];
+  var alturaJanela = window.innerHeight;
 
   function armarCenas() {
     doc.querySelectorAll("[data-fx-fixa]").forEach(function (secao) {
@@ -188,7 +196,8 @@
           escala: el.dataset.fxEscala !== undefined ? lerPar(el.dataset.fxEscala, 1, 1) : null,
           giro: el.dataset.fxGiro !== undefined ? lerPar(el.dataset.fxGiro, 0, 0) : null,
           opacidade: el.dataset.fxOpacidade !== undefined ? lerPar(el.dataset.fxOpacidade, 1, 1) : null,
-          faixa: lerPar(el.dataset.fxFaixa, 0, 1)
+          faixa: lerPar(el.dataset.fxFaixa, 0, 1),
+          ultimo: -1
         });
       });
 
@@ -209,7 +218,12 @@
         video: video,
         videoAlvo: 0,
         trilho: trilho,
-        etapas: etapas
+        etapas: etapas,
+        // geometria em cache (preenchida por medirTudo; nunca lida durante a rolagem)
+        topo: 0,
+        percurso: 0,
+        alcance: 0,
+        ultimo: -1
       });
 
       if (reduzido) {
@@ -225,15 +239,18 @@
     return (prog - faixa[0]) / (faixa[1] - faixa[0]);
   }
 
-  function atualizarCena(cena) {
-    var ret = cena.secao.getBoundingClientRect();
-    var percurso = cena.secao.offsetHeight - window.innerHeight;
-    if (percurso <= 0) return;
-    var prog = limitar(-ret.top / percurso, 0, 1);
+  function atualizarCena(cena, y) {
+    if (cena.percurso <= 0) return;
+    var prog = limitar((y - cena.topo) / cena.percurso, 0, 1);
+    if (prog === cena.ultimo) return; // nada mudou: não escreve estilo
+    cena.ultimo = prog;
     cena.secao.style.setProperty("--progresso", prog.toFixed(4));
 
-    cena.atores.forEach(function (ator) {
+    for (var i = 0; i < cena.atores.length; i++) {
+      var ator = cena.atores[i];
       var p = progressoNaFaixa(prog, ator.faixa);
+      if (p === ator.ultimo) continue;
+      ator.ultimo = p;
       var transformar = "";
       if (ator.x) transformar += "translateX(" + interpolar(ator.x[0], ator.x[1], p).toFixed(2) + "px) ";
       if (ator.y) transformar += "translateY(" + interpolar(ator.y[0], ator.y[1], p).toFixed(2) + "px) ";
@@ -241,17 +258,14 @@
       if (ator.giro) transformar += "rotate(" + interpolar(ator.giro[0], ator.giro[1], p).toFixed(2) + "deg) ";
       if (transformar) ator.el.style.transform = transformar.trim();
       if (ator.opacidade) ator.el.style.opacity = interpolar(ator.opacidade[0], ator.opacidade[1], p).toFixed(3);
-    });
+    }
 
     if (cena.video && cena.video.duration) {
       cena.videoAlvo = prog * cena.video.duration;
     }
 
-    if (cena.trilho) {
-      var alcance = cena.trilho.scrollWidth - cena.trilho.clientWidth;
-      if (alcance > 0) {
-        cena.trilho.style.transform = "translateX(" + (-prog * alcance).toFixed(1) + "px)";
-      }
+    if (cena.trilho && cena.alcance > 0) {
+      cena.trilho.style.transform = "translateX(" + (-prog * cena.alcance).toFixed(1) + "px)";
     }
 
     if (cena.etapas) {
@@ -302,17 +316,25 @@
   function armarParalaxes() {
     doc.querySelectorAll("[data-fx-paralaxe]").forEach(function (el) {
       if (el.closest("[data-fx-fixa]")) return; // dentro de cena fixa use data-fx-y
-      paralaxes.push({ el: el, forca: parseFloat(el.dataset.fxParalaxe) || 0.2 });
+      // O deslocamento é sempre medido sobre a caixa JÁ deslocada. Em regime, isso equivale
+      // a uma força efetiva de f/(1+f); mantemos esse mesmo resultado sem ler o layout a cada quadro.
+      var f = parseFloat(el.dataset.fxParalaxe) || 0.2;
+      paralaxes.push({ el: el, forca: f / (1 + f), centro: 0, meia: 0, atual: 0, forcar: true });
     });
   }
 
-  function atualizarParalaxes() {
-    var centroTela = window.innerHeight / 2;
-    paralaxes.forEach(function (p) {
-      var ret = p.el.getBoundingClientRect();
-      var desvio = (ret.top + ret.height / 2 - centroTela) * -p.forca;
+  function atualizarParalaxes(y) {
+    var longe = alturaJanela * 1.5;
+    for (var i = 0; i < paralaxes.length; i++) {
+      var p = paralaxes[i];
+      var d = p.centro - y - alturaJanela / 2; // distância do centro do elemento ao centro da janela
+      if (d > longe + p.meia || d < -longe - p.meia) continue; // longe da tela: não escreve
+      var desvio = -d * p.forca;
+      if (!p.forcar && Math.abs(desvio - p.atual) < 0.05) continue;
+      p.forcar = false;
+      p.atual = desvio;
       p.el.style.transform = "translateY(" + desvio.toFixed(1) + "px)";
-    });
+    }
   }
 
   /* ---------- 5. Reação ao ponteiro ---------- */
@@ -334,18 +356,50 @@
   /* ---------- ciclo principal ---------- */
 
   var agendado = false;
+  var precisaMedir = true;
+
+  // Mede toda a geometria de uma vez: só leituras, sem escrever estilo no meio (sem reflow forçado).
+  function medirTudo() {
+    precisaMedir = false;
+    alturaJanela = window.innerHeight;
+    var y = window.pageYOffset;
+    var i, r;
+    for (i = 0; i < cenas.length; i++) {
+      var c = cenas[i];
+      r = c.secao.getBoundingClientRect();
+      c.topo = r.top + y;
+      c.percurso = c.secao.offsetHeight - alturaJanela;
+      c.alcance = c.trilho ? c.trilho.scrollWidth - c.trilho.clientWidth : 0;
+      c.ultimo = -1;
+      for (var k = 0; k < c.atores.length; k++) c.atores[k].ultimo = -1;
+    }
+    for (i = 0; i < paralaxes.length; i++) {
+      var p = paralaxes[i];
+      r = p.el.getBoundingClientRect();
+      p.meia = r.height / 2;
+      p.centro = r.top + y + p.meia - p.atual; // posição sem o deslocamento já aplicado
+      p.forcar = true; // reescreve no próximo quadro em que estiver perto da tela
+    }
+  }
 
   function atualizar() {
     agendado = false;
-    cenas.forEach(atualizarCena);
-    atualizarParalaxes();
+    if (precisaMedir) medirTudo();
+    var y = window.pageYOffset;
+    for (var i = 0; i < cenas.length; i++) atualizarCena(cenas[i], y);
+    atualizarParalaxes(y);
   }
 
-  function aoRolar() {
+  function pedir() {
     if (!agendado) {
       agendado = true;
       requestAnimationFrame(atualizar);
     }
+  }
+
+  function remedir() {
+    precisaMedir = true;
+    pedir();
   }
 
   function iniciar() {
@@ -356,9 +410,14 @@
     armarMouse();
 
     if (!reduzido) {
-      window.addEventListener("scroll", aoRolar, { passive: true });
-      window.addEventListener("resize", aoRolar);
-      aoRolar();
+      window.addEventListener("scroll", pedir, { passive: true });
+      window.addEventListener("resize", remedir);
+      // A altura da página muda quando fontes/imagens chegam. O ResizeObserver dispara após o layout
+      // (inclusive na primeira vez), então a medição inicial também não força reflow.
+      if ("ResizeObserver" in window) new ResizeObserver(remedir).observe(doc.body);
+      else remedir();
+      if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(remedir);
+      window.addEventListener("load", remedir);
       // laço só para suavizar vídeo (barato; dorme se não há vídeo)
       if (cenas.some(function (c) { return c.video; })) {
         (function laco() {
