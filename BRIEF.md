@@ -133,3 +133,8 @@ incluindo fotos, textos e as ilustrações SVG. O build impede a volta dessas pa
 - Vídeo refeito: origem `r.mp4` (lago). Trecho 3–10 s (suave) -> minterpolate 60 fps -> loop com xfade 1,2 s -> H.264 crf 24 (1,8 MB), sem GOP forçado.
   Comando-base: ffmpeg -ss 3 -t 7 -i r.mp4 -filter_complex "[0:v]minterpolate=fps=60:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,scale=1280:720,format=yuv420p,split=3[a][b][c];[a]trim=0:1.2,setpts=PTS-STARTPTS[head];[b]trim=5.8:7.0,setpts=PTS-STARTPTS[tail];[c]trim=1.2:5.8,setpts=PTS-STARTPTS[mid];[tail][head]xfade=transition=fade:duration=1.2:offset=0[mix];[mix][mid]concat=n=2:v=1:a=0[v]" ...
 - Nota de medição: testes de rolagem com `scrollTo` precisam de `behavior:'instant'` (o site usa scroll-behavior:smooth, que mascara o custo). Com isso, TANTO a versão publicada quanto a atual mostram ~15–20 quadros lentos a cada troca de cor de fundo (fundo viaja) em CPU 3–6x mais lenta; custo pré-existente da transição de color/background do body (restyle da página inteira). Não alterado.
+
+# Fluidez no celular (2026-11-13, 7)
+- Culpado medido: transição de `color` do body (motor) -> restyle global por quadro. Corrigido em site.css (`.fx-fundo-ativo body{color:var(--osso);transition:background-color .7s}`).
+- Bônus visual: antes o texto ficava escuro sobre fundo escuro por 0,7 s no meio das trocas de cena (ex.: texto do hero na entrada de 'Valorização').
+- Clipes iniciam escalonados (220 ms). Nenhum translateZ/will-change adicional (sem ganho medido).

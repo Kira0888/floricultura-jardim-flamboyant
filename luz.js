@@ -45,10 +45,23 @@
   });
 
   // ---------- reprodução ----------
-  function tocar(v) {
-    if (!v.src) return;
+  function iniciarReproducao(v) {
     var p = v.play();
     if (p && p.catch) p.catch(function () { /* autoplay barrado: o botão "Reproduzir" aparece */ rotular(v); });
+  }
+  // Os 3 clipes entram na tela juntos; iniciar os três decodificadores no mesmo quadro trava a rolagem em
+  // celulares lentos. Só na primeira vez, cada clipe começa 220 ms depois do anterior (imperceptível).
+  var clipes = [].slice.call(document.querySelectorAll(".clipe"));
+  function tocar(v) {
+    if (!v.src) return;
+    var i = clipes.indexOf(v);
+    if (i > 0 && !v.__jaIniciou) {
+      v.__jaIniciou = true;
+      setTimeout(function () { if (v.__naTela && v.__quer !== false) iniciarReproducao(v); }, i * 220);
+      return;
+    }
+    v.__jaIniciou = true;
+    iniciarReproducao(v);
   }
 
   function carregar(v) {

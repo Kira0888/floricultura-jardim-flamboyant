@@ -106,3 +106,13 @@ O loop usa só o trecho suave (3–10 s do original), interpolado por movimento 
 entre o fim e o começo. O quadro de reserva (`hero-poster.webp`) é o 1º quadro do vídeo, para a troca não dar "pulo".
 Para trocar o vídeo: veja o filtro ffmpeg em `BRIEF.md` e mantenha os nomes `video/hero.mp4` e `video/hero.webm`.
 A abertura rola junto com a página (sem zoom, sem cena presa).
+
+## Rolagem no celular (medido com arrastes de toque reais)
+
+Causa das "puxadinhas": a troca de cor de fundo entre cenas. O motor animava `color` no `<body>` (herdado por todo o texto), então o
+navegador recalculava o estilo da página inteira a cada quadro por 0,7 s, em toda troca de cena. Agora o `<body>` só anima o fundo
+(`background-color`); a cor do texto é fixa (cenas claras já definem a sua). Resultado, CPU 4x mais lenta: 8,2% -> 2,3% de quadros lentos.
+Sem efeito medido (por isso NÃO foram alterados): `backdrop-filter` do vidro, blur da foto de fundo, os vídeos, `will-change` extra,
+`translateZ(0)` nos vídeos. Listeners de rolagem e de ponteiro já são `{ passive: true }`.
+Os 3 clipes da equipe iniciam com 220 ms de intervalo (3 decodificadores no mesmo quadro travavam celulares lentos).
+Para testar rolagem em automação use arrastes de toque (`Input.dispatchTouchEvent`), não `scrollTo` (o site usa scroll-behavior: smooth).

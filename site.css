@@ -52,6 +52,14 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
+
+/* A troca de cor de fundo entre cenas era o maior custo de rolagem no celular: o motor animava `color` no
+   <body>, e como `color` é herdado, o navegador recalculava o estilo da página inteira a cada quadro, por
+   0,7 s, em cada troca de cena (medido: 9% de quadros lentos; 2,5% sem isso).
+   Aqui o fundo continua fazendo a transição (barata: só pinta o fundo), mas a cor do texto do <body> fica
+   fixa. As cenas claras já definem a própria cor de texto; as escuras usam o claro padrão. O cabeçalho
+   mantém o fade de cor (é um elemento só). */
+.fx-fundo-ativo body{color:var(--osso);transition:background-color .7s ease}
 h1,h2,h3,p,figure{margin:0}
 svg{display:block}
 img{display:block}
